@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Cryptolator</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="defaultValue">0.00</string>
+
+    <string-array name="coins">
+        <item>BTC</item>
+        <item>ETH</item>
+    </string-array>
+
+    <string-array name="currency">
+        <item>USD</item>
+        <item>NIG</item>
+        <item>EUR</item>
+        <item>YEN</item>
+    </string-array>
 </resources>
