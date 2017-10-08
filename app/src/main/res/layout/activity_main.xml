@@ -98,12 +98,12 @@
            android:layout_height="wrap_content"
            android:text="@string/current_data"
            android:padding="20dp"
-           android:id="@+id/currentDataBtn"
            style="@style/myTextStyle"
            />
        <ImageButton
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
+           android:id="@+id/launchCurrentData"
            android:background="@android:drawable/ic_menu_set_as"
            android:padding="50dp"
            android:layout_gravity="center"/>
