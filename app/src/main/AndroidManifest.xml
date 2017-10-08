@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".LiveTrading"></activity>
+        <activity android:name=".LiveTrading" />
+        <activity android:name=".About"></activity>
     </application>
 
 </manifest>
