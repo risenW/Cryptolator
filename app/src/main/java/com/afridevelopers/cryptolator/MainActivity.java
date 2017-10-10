@@ -50,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 calculationHelper = new CalculationHelper();
-//
-                  value_to_convert = Double.parseDouble(input_value.getText().toString());  // Gets the entered string and cast it to a double type
-//                selected_coin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
-//                selected_currency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
-//                url = buildUrl(selected_coin,selected_currency);  //Calls the method to build the request Url
+
+                value_to_convert = Double.parseDouble(input_value.getText().toString());  // Gets the entered string and cast it to a double type
+                selected_coin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
+                selected_currency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
+                url = buildUrl(selected_coin,selected_currency);  //Calls the method to build the request Url
 
                 new GetContacts().execute();
             }
@@ -93,13 +93,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-//            HttpHandler serviceHandler = new HttpHandler();
+            HttpHandler serviceHandler = new HttpHandler();
 
             // Making a request to url and getting response
-//            String jsonStr = serviceHandler.makeServiceCall(url);
-             JSONArray myArray;
-             String jsonStr = "[{\"NGN\":1686045.39}]";
-            //Log.e(TAG, "Response from url: " + jsonStr);
+            String jsonStr = serviceHandler.makeServiceCall(url);
+            JSONArray myArray;
+//            String jsonStr = "[{\"NGN\":1686045.39}]";
+            Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
                         JSONObject myObject = myArray.getJSONObject(i);
                         currency = myObject.getString("NGN");
-                        Log.e(TAG, "Returned price is: NGN " + currency);
+                        Log.e(TAG, "Returned value is: NGN " + currency);
                     }
 
                     converted_value = calculationHelper.convert(value_to_convert,currency); //Converts the value
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(),
-                                "Couldn't get json from server. Check LogCat for possible errors!",
+                                "Couldn't get Data from server. Please check your Internet connection!",
                                 Toast.LENGTH_LONG)
                                 .show();
                     }
