@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -14,24 +15,12 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView convertedValue;
-    private EditText inputValue;
-    private Spinner coinSelected, currencySelected;
-    private ImageButton launchCurrentData,swap,reload,share;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        convertedValue = (TextView)findViewById(R.id.convertedValue);
-        inputValue = (EditText)findViewById(R.id.inputValue);
-        coinSelected = (Spinner)findViewById(R.id.coinSpinner);
-        currencySelected = (Spinner)findViewById(R.id.currencySpinner);
-        launchCurrentData = (ImageButton)findViewById(R.id.launchCurrentData);
-        swap = (ImageButton)findViewById(R.id.swapBtn);
-        reload = (ImageButton)findViewById(R.id.reloadBtn);
-        share = (ImageButton)findViewById(R.id.shareBtn);
+
     }
 
     @Override
