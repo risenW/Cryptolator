@@ -7,18 +7,18 @@
     <string name="convert_from">Converting From</string>
     <string name="enter_amount">Enter the amount here:</string>
     <string name="calculateBtn">Convert</string>
-    <string name="convert_to">Converted To</string>
+    <string name="convert_to">To</string>
     <string name="converted_amount">Converted amount in home currency:</string>
 
     <string-array name="coins">
-        <item>BTC</item>
-        <item>ETH</item>
+        <item>Bitcoin BTC</item>
+        <item>Etherelium ETH</item>
     </string-array>
 
     <string-array name="currency">
-        <item>USD</item>
-        <item>NGN</item>
-        <item>EUR</item>
-        <item>YEN</item>
+        <item>US Dollars USD</item>
+        <item>Nigerian Naira NGN</item>
+        <item>Euros EUR</item>
+        <item>Chinese YEN</item>
     </string-array>
 </resources>

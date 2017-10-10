@@ -1,8 +1,10 @@
 package com.afridevelopers.cryptolator;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,15 +119,15 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getApplicationContext(),
-                                    "Json parsing error: " + e.getMessage(),
-                                    Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    });
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(getApplicationContext(),
+//                                    "Json parsing error: " + e.getMessage(),
+//                                    Toast.LENGTH_LONG)
+//                                    .show();
+//                        }
+//                    });
 
                 }
             } else {
@@ -133,10 +135,23 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),
-                                "Couldn't get Data from server. Please check your Internet connection!",
-                                Toast.LENGTH_LONG)
-                                .show();
+//                        Toast.makeText(getApplicationContext(),
+//                                "Couldn't get Data from server. Please check your Internet connection!",
+//                                Toast.LENGTH_LONG)
+//                                .show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        builder.setIcon(getResources().getDrawable(R.drawable.facebook));
+                        builder.setTitle("Sorry");
+                        builder.setMessage("There was an error converting to your currency." +
+                                "Please check your internet Connection and try again");
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        builder.show();
+
                     }
                 });
 

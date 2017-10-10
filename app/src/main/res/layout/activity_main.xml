@@ -86,7 +86,7 @@
         android:background="@color/colorPrimary"
         android:text="@string/calculateBtn"
         android:textAllCaps="false"
-        android:textColor="@color/grey_light"
+        android:textColor="@color/white"
         style="@style/spinner" />
 
 </LinearLayout>
