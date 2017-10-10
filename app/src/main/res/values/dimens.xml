@@ -4,4 +4,6 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="from_and_to_Height">100dp</dimen>
     <dimen name="bottomToolBarBtnMarginRight">90dp</dimen>
+    <dimen name="aboutLogoHeight">100dp</dimen>
+    <dimen name="socialIconWidth">60dp</dimen>
 </resources>

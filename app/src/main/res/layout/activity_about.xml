@@ -1,13 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_about"
     android:layout_width="match_parent"
+    android:background="@drawable/developed"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.afridevelopers.cryptolator.About">
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:text="Cryptolator Version 1.0"
+        style="@style/about_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="40">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="@dimen/aboutLogoHeight"
+            android:layout_weight="30"
+            android:layout_gravity="center"
+            android:background="@drawable/cropped"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="70"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:padding="3dp"
+            android:textColor="@color/white"
+            android:text="@string/about_app"/>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:textAlignment="center"
+        android:text="@string/connect_developer"
+        style="@style/about_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_weight="15">
+
+        <ImageButton
+            android:layout_width="@dimen/socialIconWidth"
+            android:layout_height="match_parent"
+            android:id="@+id/facebook"
+            android:background="@drawable/facebook"/>
+        <ImageButton
+            android:layout_width="@dimen/socialIconWidth"
+            android:layout_height="match_parent"
+            android:id="@+id/instagram"
+            android:background="@drawable/instagram"/>
+        <ImageButton
+            android:layout_width="@dimen/socialIconWidth"
+            android:layout_height="match_parent"
+            android:id="@+id/github"
+            android:background="@drawable/twitter"/>
+        <ImageButton
+            android:layout_width="@dimen/socialIconWidth"
+            android:layout_height="match_parent"
+            android:id="@+id/youtube"
+            android:background="@drawable/youtube"/>
+        <ImageButton
+            android:layout_width="@dimen/socialIconWidth"
+            android:layout_height="match_parent"
+            android:id="@+id/website"
+            android:background="@drawable/cropped"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:textSize="14sp"
+        android:text="Data Source Cryptocompare"
+        style="@style/about_text" />
+
+</LinearLayout>

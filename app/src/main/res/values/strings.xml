@@ -9,6 +9,9 @@
     <string name="calculateBtn">Convert</string>
     <string name="convert_to">To</string>
     <string name="converted_amount">Converted amount in home currency:</string>
+    <string name="about_app">  Cryptolator lets you convert BTC and ETH crytocurrency to your Local currency. Conversion is
+                               in up to date and in real time.</string>
+    <string name="connect_developer">Connect with the Developer</string>
 
     <string-array name="coins">
         <item>Bitcoin BTC</item>
