@@ -6,7 +6,7 @@
     <string name="check_for_update">Check for update</string>
     <string name="convert_from">Converting From</string>
     <string name="enter_amount">Enter the amount here:</string>
-    <string name="calculateBtn">Calculate</string>
+    <string name="calculateBtn">Convert</string>
     <string name="convert_to">Converted To</string>
     <string name="converted_amount">Converted amount in home currency:</string>
 

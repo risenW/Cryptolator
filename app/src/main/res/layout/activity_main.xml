@@ -12,23 +12,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="30"
+            android:layout_weight="50"
             android:text="@string/convert_from"
             style="@style/currency_text"
              />
         <Spinner
             android:id="@+id/spinner_coin"
             android:layout_width="match_parent"
-            android:layout_weight="55"
+            android:layout_weight="50"
             android:entries="@array/coins"
             android:gravity="top"
             style="@style/spinner" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="15"
-            android:text="@string/enter_amount"
-            style="@style/amount_text" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -39,7 +34,7 @@
         <EditText
             android:id="@+id/amount"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:background="@color/grey_very_dark"
             android:digits="0123456789."
             android:inputType="numberDecimal"
@@ -57,13 +52,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="30"
+            android:layout_weight="50"
             android:text="@string/convert_to"
             style="@style/currency_text" />
         <Spinner
             android:id="@+id/spinner_currency"
             android:layout_width="match_parent"
-            android:layout_weight="55"
+            android:layout_weight="50"
             android:entries="@array/currency"
             android:gravity="top"
             style="@style/spinner" />
@@ -77,7 +72,7 @@
         <TextView
             android:id="@+id/output"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             style="@style/input_views"
             android:background="@color/grey_very_dark"
             android:typeface="normal"/>
@@ -90,6 +85,7 @@
         android:layout_weight="10"
         android:background="@color/colorPrimary"
         android:text="@string/calculateBtn"
+        android:textAllCaps="false"
         android:textColor="@color/grey_light"
         style="@style/spinner" />
 

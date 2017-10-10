@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < myArray.length(); i++){
 
                         JSONObject myObject = myArray.getJSONObject(i);
-                        currency = myObject.getString("NGN");
-                        Log.e(TAG, "Returned value is: NGN " + currency);
+                        currency = myObject.getString(selected_currency);
+                        Log.e(TAG, "Returned value is " + selected_currency + ": " + currency);
                     }
 
                     converted_value = calculationHelper.convert(value_to_convert,currency); //Converts the value
