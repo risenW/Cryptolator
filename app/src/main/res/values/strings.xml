@@ -7,6 +7,11 @@
     <string name="about">About</string>
     <string name="rate_this_app">Rate this App</string>
     <string name="check_for_update">Check for update</string>
+    <string name="foreign_currency">Foreign Currency</string>
+    <string name="enter_amount">Enter the amount here:</string>
+    <string name="calculateBtn">Calculate</string>
+    <string name="home_currency">Home Currency</string>
+    <string name="converted_amount">Converted amount in home currency:</string>
 
     <string-array name="coins">
         <item>BTC</item>
