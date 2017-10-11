@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
         input_value = (EditText)findViewById(R.id.amount);
         output = (TextView)findViewById(R.id.output);
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private String buildUrl(String selected_coin,String selected_currency){
 
-        String url = "https//min-api.cryptocompare.com/data/price?fsym=" + selected_coin + "&tsyms=" + selected_currency;
+        String url = "https://min-api.cryptocompare.com/data/price?fsym=" + selected_coin + "&tsyms=" + selected_currency;
         Log.e(TAG, "Url is:  " + url);
         return url;
     }

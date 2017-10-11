@@ -10,7 +10,8 @@
     <string name="convert_to">To</string>
     <string name="converted_amount">Converted amount in home currency:</string>
     <string name="about_app">  Cryptolator lets you convert BTC and ETH crytocurrency to your Local currency. Conversion is
-                               in up to date and in real time.</string>
+                               in up to date and in real time. Supported currencies: USD,EUR,NGN,JPY/GBP,AUD
+                                ,CAD,CHF,CNY,SEK,MXN,NZD,SGD,SGD,HKD,NOK,KRW,TYR,INR,RUB,BRL,ZAR,DKK,PLN</string>
     <string name="connect_developer">Connect with the Developer</string>
 
     <string-array name="coins">
@@ -22,6 +23,27 @@
         <item>US Dollars USD</item>
         <item>Nigerian Naira NGN</item>
         <item>Euros EUR</item>
-        <item>Chinese YEN</item>
+        <item>Japanese Yen JPY</item>
+        <item>Pound Sterling GBP</item>
+        <item>Australian Dollar AUD</item>
+        <item>Canadian Dollar CAD</item>
+        <item>Swiss Franc CHF</item>
+        <item>Chinese Yuan CNY</item>
+        <item>Swedish Krona SEK</item>
+        <item>Mexican Peso MXN</item>
+        <item>New Zealand dollar NZD</item>
+        <item>Singapore Dollar SGD</item>
+        <item>Hong Kong Dollar HKD</item>
+        <item>Norwegian Krone NOK</item>
+        <item>South Korean Won KRW</item>
+        <item>Turkish Lira TRY</item>
+        <item>Indian Rupee INR</item>
+        <item>Russian Ruble RUB</item>
+        <item>Brazilian Real BRL</item>
+        <item>South African Rand ZAR</item>
+        <item>Danish Krone DKK</item>
+        <item>Polish Zloty PLN</item>
+
+
     </string-array>
 </resources>

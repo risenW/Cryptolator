@@ -5,6 +5,7 @@
     android:background="@drawable/developed"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="5dp"
     tools:context="com.afridevelopers.cryptolator.About">
 
     <TextView
@@ -55,28 +56,33 @@
         android:layout_weight="15">
 
         <ImageButton
-            android:layout_width="@dimen/socialIconWidth"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="20"
             android:id="@+id/facebook"
             android:background="@drawable/facebook"/>
         <ImageButton
-            android:layout_width="@dimen/socialIconWidth"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="20"
             android:id="@+id/instagram"
             android:background="@drawable/instagram"/>
         <ImageButton
-            android:layout_width="@dimen/socialIconWidth"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="20"
             android:id="@+id/github"
             android:background="@drawable/twitter"/>
         <ImageButton
-            android:layout_width="@dimen/socialIconWidth"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="20"
             android:id="@+id/youtube"
             android:background="@drawable/youtube"/>
         <ImageButton
-            android:layout_width="@dimen/socialIconWidth"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="20"
             android:id="@+id/website"
             android:background="@drawable/cropped"/>
 
