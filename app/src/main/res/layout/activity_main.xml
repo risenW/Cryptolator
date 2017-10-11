@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/developed"
+    android:background="@drawable/splashscreen"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,16 +29,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="20"
-        android:background="@color/grey_dark"
+        android:background="@android:color/transparent"
         style="@style/spinner">
         <EditText
             android:id="@+id/amount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey_very_dark"
+            android:background="@android:color/transparent"
             android:digits="0123456789."
             android:inputType="numberDecimal"
-            style="@style/input_views">
+            style="@style/input_views"
+            android:textSize="40sp">
             <requestFocus/>
         </EditText>
 
@@ -67,15 +68,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_weight="20"
-        android:background="@color/grey_dark"
+        android:background="@android:color/transparent"
         style="@style/spinner">
         <TextView
             android:id="@+id/output"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/input_views"
-            android:background="@color/grey_very_dark"
-            android:typeface="normal"/>
+            android:typeface="normal"
+            android:background="@android:color/transparent" />
 
     </LinearLayout>
 

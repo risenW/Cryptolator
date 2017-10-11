@@ -10,7 +10,7 @@
     <string name="convert_to">To</string>
     <string name="converted_amount">Converted amount in home currency:</string>
     <string name="about_app">  Cryptolator lets you convert BTC and ETH crytocurrency to your Local currency. Conversion is
-                               in up to date and in real time. Supported currencies: USD,EUR,NGN,JPY/GBP,AUD
+                                up to date and in real time. Supported currencies: USD,EUR,NGN,JPY/GBP,AUD
                                 ,CAD,CHF,CNY,SEK,MXN,NZD,SGD,SGD,HKD,NOK,KRW,TYR,INR,RUB,BRL,ZAR,DKK,PLN</string>
     <string name="connect_developer">Connect with the Developer</string>
 

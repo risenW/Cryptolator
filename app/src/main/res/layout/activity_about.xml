@@ -2,43 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/developed"
+    android:background="@drawable/splashscreen"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
     tools:context="com.afridevelopers.cryptolator.About">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="10"
-        android:text="Cryptolator Version 1.0"
-        style="@style/about_text" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="40">
+        android:layout_weight="10">
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="@dimen/aboutLogoHeight"
             android:layout_weight="30"
             android:layout_gravity="center"
-            android:background="@drawable/cropped"/>
+            android:background="@drawable/icon"/>
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="70"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:padding="3dp"
-            android:textColor="@color/white"
-            android:text="@string/about_app"/>
+            android:text="Cryptolator Version 1.0"
+            style="@style/about_text" />
 
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="40"
+        android:text="@string/about_app"
+        style="@style/about_text" />
 
     <TextView
         android:layout_width="match_parent"
@@ -84,7 +82,7 @@
             android:layout_height="match_parent"
             android:layout_weight="20"
             android:id="@+id/website"
-            android:background="@drawable/cropped"/>
+            android:background="@drawable/web"/>
 
     </LinearLayout>
 
