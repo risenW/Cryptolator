@@ -37,7 +37,64 @@ public class CalculationHelper {
                 temp = "EUR";
                 break;
             case 3:
-                temp = "YEN";
+                temp = "JPY";
+                break;
+            case 4:
+                temp = "GBP";
+                break;
+            case 5:
+                temp = "AUD";
+                break;
+            case 6:
+                temp = "CAD";
+                break;
+            case 7:
+                temp = "CHF";
+                break;
+            case 8:
+                temp = "CNY";
+                break;
+            case 9:
+                temp = "SEK";
+                break;
+            case 10:
+                temp = "MXN";
+                break;
+            case 11:
+                temp = "NZD";
+                break;
+            case 12:
+                temp = "SGD";
+                break;
+            case 13:
+                temp = "HKD";
+                break;
+            case 14:
+                temp = "NOK";
+                break;
+            case 15:
+                temp = "KRW";
+                break;
+            case 16:
+                temp = "TRY";
+                break;
+            case 17:
+                temp = "INR";
+                break;
+            case 18:
+                temp = "RUB";
+                break;
+            case 19:
+                temp = "BRL";
+                break;
+            case 20:
+                temp = "ZAR";
+                break;
+            case 21:
+                temp = "DKK";
+                break;
+            case 22:
+                temp = "PLN";
                 break;
             default:
                 temp = "USD";
