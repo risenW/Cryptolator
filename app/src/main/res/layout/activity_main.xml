@@ -38,8 +38,7 @@
             android:background="@android:color/transparent"
             android:digits="0123456789."
             android:inputType="numberDecimal"
-            style="@style/input_views"
-            android:textSize="40sp">
+            style="@style/input_views">
             <requestFocus/>
         </EditText>
 

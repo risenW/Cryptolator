@@ -3,7 +3,10 @@ package com.afridevelopers.cryptolator;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.Preference;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,8 +24,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MY_PREF = "my_preference";
     private String TAG = MainActivity.class.getSimpleName();
     private ProgressDialog pDialog;
     private EditText input_value;
@@ -33,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private double value_to_convert;
     private static String url = "";
     private CalculationHelper calculationHelper;
+    private final String INPUT = "input", OUTPUT = "output", COIN = "coin", CURRENCY = "currency";   //Keys for saving in preference
+
+    @Override
+    public void onBackPressed() {
+        save_in_preference();  //Saves the last entered value and result.
+        System.exit(RESULT_OK);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +60,14 @@ public class MainActivity extends AppCompatActivity {
         spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
         spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
 
+        //Gets the saved preference to enable consistency
+        SharedPreferences preferences = getSharedPreferences(MY_PREF,0);
+        input_value.setText(preferences.getString(INPUT,"0.0"));
+        output.setText(preferences.getString(OUTPUT,"0.0"));
+        spinner_coin.setSelection(preferences.getInt(COIN,0));
+        spinner_currency.setSelection(preferences.getInt(CURRENCY,0));
 
-
-        //Calculates button gets the user value and Starts the Async class to fetch the data from the API
+        //Conversion button gets the user value and Starts the Async class to fetch the data from the API
         calculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,26 +139,14 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Json parsing error: " + e.getMessage(),
-//                                    Toast.LENGTH_LONG)
-//                                    .show();
-//                        }
-//                    });
-
                 }
+
             } else {
                 Log.e(TAG, "Couldn't get json from server.");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        Toast.makeText(getApplicationContext(),
-//                                "Couldn't get Data from server. Please check your Internet connection!",
-//                                Toast.LENGTH_LONG)
-//                                .show();
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                         builder.setIcon(getResources().getDrawable(R.drawable.facebook));
                         builder.setTitle("Sorry");
@@ -167,12 +174,28 @@ public class MainActivity extends AppCompatActivity {
             // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
-
-             // Updating converted value to the output textview
-
+            // Updating converted value to the output textview
             output.setText(converted_value);
 
         }
+
+    }
+
+    private void save_in_preference() {
+
+        SharedPreferences preferences = getSharedPreferences(MY_PREF, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(INPUT,input_value.getText().toString());
+        editor.putString(OUTPUT,output.getText().toString());
+        editor.putInt(COIN,spinner_coin.getSelectedItemPosition());
+        editor.putInt(CURRENCY,spinner_currency.getSelectedItemPosition());
+        editor.apply();
+
+        Log.e(TAG, "Saved in Preference input: " + input_value.getText().toString() +
+                    " output: " + output.getText().toString() + " coin: " +
+                     calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()) +
+                    " currency: " + calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()) );
+
 
     }
 
