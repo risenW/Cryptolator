@@ -1,9 +1,11 @@
 package com.afridevelopers.cryptolator;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.preference.Preference;
 import android.support.annotation.Nullable;
@@ -34,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private EditText input_value;
     private TextView output;
+    private Context context;
     private Spinner spinner_coin,spinner_currency;
-    private Button calculate;
+    private Button calculate,add_to_list;
     private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         input_value = (EditText)findViewById(R.id.amount);
         output = (TextView)findViewById(R.id.output);
         calculate = (Button)findViewById(R.id.btn_calculate);
+        add_to_list = (Button)findViewById(R.id.btn_add_to_list);
         spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
         spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
 
@@ -93,6 +97,25 @@ public class MainActivity extends AppCompatActivity {
                 new GetContacts().execute();
             }
         });
+
+        add_to_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+                    coinDbHelper coinDbHelper = new coinDbHelper(context);
+                    SQLiteDatabase sqLiteDatabase = coinDbHelper.getWritableDatabase();
+                    coinDbHelper.insertPair(calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()),
+                            calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()),
+                            Double.parseDouble(output.getText().toString()),sqLiteDatabase);
+                    Log.d("Insertion","Values Inserted");
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
 
@@ -114,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private class GetContacts extends AsyncTask<Void, Void, Void> {
          String price;
+
 
         @Override
         protected void onPreExecute() {
@@ -140,8 +164,7 @@ public class MainActivity extends AppCompatActivity {
                         currency = myObject.getString(selected_currency);
                         Log.e(TAG, "Returned value is " + selected_currency + ": " + currency);
 
-
-                   price = calculationHelper.convert(value_to_convert,currency); //Converts the value
+                        price = calculationHelper.convert(value_to_convert,currency); //Converts the value
 
 
                 } catch (final JSONException e) {
