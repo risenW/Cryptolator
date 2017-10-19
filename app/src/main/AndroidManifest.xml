@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.afridevelopers.cryptolator">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".LiveTrading" />
-        <activity android:name=".About"></activity>
+        <activity android:name=".About" />
+        <activity android:name=".RecyclerView"></activity>
     </application>
 
 </manifest>

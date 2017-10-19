@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView output;
     private Spinner spinner_coin,spinner_currency;
     private Button calculate;
-    private String selected_coin,selected_currency,converted_value;
+    private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
     private CalculationHelper calculationHelper;
@@ -44,8 +44,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        save_in_preference();  //Saves the last entered value and result.
-        System.exit(RESULT_OK);
+        super.onBackPressed();
+        //Saves the last entered value and result.
+        SharedPreferences preferences = getSharedPreferences(MY_PREF, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(INPUT,input_value.getText().toString());
+        editor.putString(OUTPUT,output.getText().toString());
+        editor.putInt(COIN,spinner_coin.getSelectedItemPosition());
+        editor.putInt(CURRENCY,spinner_currency.getSelectedItemPosition());
+        editor.apply();
+
+        Log.e(TAG, "Saved in Preference input: " + input_value.getText().toString() +
+                " output: " + output.getText().toString() + " coin: " +
+                calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()) +
+                " currency: " + calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()) );
     }
 
     @Override
@@ -101,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
      * Async task class to get json by making HTTP call
      */
     private class GetContacts extends AsyncTask<Void, Void, Void> {
+         String price;
 
         @Override
         protected void onPreExecute() {
@@ -116,25 +129,19 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             HttpHandler serviceHandler = new HttpHandler();
-
             // Making a request to url and getting response
             String jsonStr = serviceHandler.makeServiceCall(url);
-            JSONArray myArray;
-//            String jsonStr = "[{\"NGN\":1686045.39}]";
             Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
-                    String currency = "";
-                    myArray = new JSONArray(jsonStr);
-                    for (int i = 0; i < myArray.length(); i++){
-
-                        JSONObject myObject = myArray.getJSONObject(i);
+                    String currency;
+                        JSONObject myObject = new JSONObject(jsonStr);
                         currency = myObject.getString(selected_currency);
                         Log.e(TAG, "Returned value is " + selected_currency + ": " + currency);
-                    }
 
-                    converted_value = calculationHelper.convert(value_to_convert,currency); //Converts the value
+
+                   price = calculationHelper.convert(value_to_convert,currency); //Converts the value
 
 
                 } catch (final JSONException e) {
@@ -175,27 +182,10 @@ public class MainActivity extends AppCompatActivity {
             if (pDialog.isShowing())
                 pDialog.dismiss();
             // Updating converted value to the output textview
-            output.setText(converted_value);
+            output.setText(price);
+            Log.e(TAG, "Returned Converted value: " + price);
 
         }
-
-    }
-
-    private void save_in_preference() {
-
-        SharedPreferences preferences = getSharedPreferences(MY_PREF, 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(INPUT,input_value.getText().toString());
-        editor.putString(OUTPUT,output.getText().toString());
-        editor.putInt(COIN,spinner_coin.getSelectedItemPosition());
-        editor.putInt(CURRENCY,spinner_currency.getSelectedItemPosition());
-        editor.apply();
-
-        Log.e(TAG, "Saved in Preference input: " + input_value.getText().toString() +
-                    " output: " + output.getText().toString() + " coin: " +
-                     calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()) +
-                    " currency: " + calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()) );
-
 
     }
 
