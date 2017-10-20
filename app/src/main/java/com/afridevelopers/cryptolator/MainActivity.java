@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.preference.Preference;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,14 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Map;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -103,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 try {
-                    coinDbHelper coinDbHelper = new coinDbHelper(context);
+                    DbHelper coinDbHelper = new DbHelper(context);
                     SQLiteDatabase sqLiteDatabase = coinDbHelper.getWritableDatabase();
+
                     coinDbHelper.insertPair(calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()),
                             calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()),
                             Double.parseDouble(output.getText().toString()),sqLiteDatabase);
