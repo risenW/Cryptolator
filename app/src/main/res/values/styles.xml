@@ -54,5 +54,19 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="cardViewValue">
+        <item name="android:textAlignment">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/cardview_shadow_start_color</item>
+    </style>
+
+    <style name="cardViewMoney">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
 
 </resources>

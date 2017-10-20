@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView output;
     private Context context;
     private Spinner spinner_coin,spinner_currency;
-    private Button calculate,add_to_list;
+    private Button calculate,add_to_list,show_list;
     private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
     private CalculationHelper calculationHelper;
+    private DbHelper dbHelper;
     private final String INPUT = "input", OUTPUT = "output", COIN = "coin", CURRENCY = "currency";   //Keys for saving in preference
 
     @Override
@@ -66,8 +70,11 @@ public class MainActivity extends AppCompatActivity {
         output = (TextView)findViewById(R.id.output);
         calculate = (Button)findViewById(R.id.btn_calculate);
         add_to_list = (Button)findViewById(R.id.btn_add_to_list);
+        show_list = (Button)findViewById(R.id.show_list);
         spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
         spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
+        dbHelper = new DbHelper(this);
+
 
         //Gets the saved preference to enable consistency
         SharedPreferences preferences = getSharedPreferences(MY_PREF,0);
@@ -94,23 +101,39 @@ public class MainActivity extends AppCompatActivity {
         add_to_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 try {
-                    DbHelper coinDbHelper = new DbHelper(context);
-                    SQLiteDatabase sqLiteDatabase = coinDbHelper.getWritableDatabase();
+                    dbHelper.open();
 
-                    coinDbHelper.insertPair(calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()),
-                            calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()),
-                            Double.parseDouble(output.getText().toString()),sqLiteDatabase);
+                    String tempCoin,tempCurrency;
+                    double value;
+                    tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
+                    tempCurrency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
+                    value = Double.parseDouble(input_value.getText().toString());
+
+                    dbHelper.insertPair(tempCoin,tempCurrency,value);
                     Log.d("Insertion","Values Inserted");
+                    Toast.makeText(MainActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    dbHelper.close();
 
-                } catch (NumberFormatException e) {
+                }catch (Exception e){
                     e.printStackTrace();
                 }
+            }
+        });
 
+        show_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    startActivity(new Intent(MainActivity.this,RecyclerList.class));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
+
+
 
 
 

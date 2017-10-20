@@ -88,7 +88,7 @@
         <Button
             android:id="@+id/btn_calculate"
             android:layout_width="0dp"
-            android:layout_weight="50"
+            android:layout_weight="30"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             android:text="@string/calculateBtn"
@@ -97,10 +97,19 @@
         <Button
             android:id="@+id/btn_add_to_list"
             android:layout_width="0dp"
-            android:layout_weight="50"
+            android:layout_weight="30"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
             android:text="@string/add"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+        <Button
+            android:id="@+id/show_list"
+            android:layout_width="0dp"
+            android:layout_weight="30"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:text="List"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 

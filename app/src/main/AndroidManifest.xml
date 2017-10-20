@@ -18,9 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".LiveTrading" />
         <activity android:name=".About" />
-        <activity android:name=".RecyclerView"></activity>
+        <activity android:name=".RecyclerList"></activity>
     </application>
 
 </manifest>

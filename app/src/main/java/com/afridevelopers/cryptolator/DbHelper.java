@@ -25,7 +25,7 @@ public class DbHelper {
     private Context context;
 
     private static final String CREATE_QUERY = "create table " + TABLE_NAME +
-            "( " + COIN_TYPE + " text,"
+            "(" + COIN_TYPE + " text,"
             + CURRENCY_TYPE + " text,"
             + CURRENCY_VALUE + " double);";
     private static final String DROP_QUERY = "drop table if exist " + TABLE_NAME + ";";
@@ -37,7 +37,8 @@ public class DbHelper {
 
     public void open() throws SQLException {
         coinDbHelper = new CoinDbHelper(context);
-        sqLiteDatabase = coinDbHelper.getWritableDatabase();
+        sqLiteDatabase = coinDbHelper.getReadableDatabase();
+
 
     }
 
@@ -75,7 +76,7 @@ public class DbHelper {
     }
 
         public void insertPair(String coinName, String currencyName, double currencyValue) {
-            sqLiteDatabase = coinDbHelper.getReadableDatabase();
+            sqLiteDatabase = coinDbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COIN_TYPE, coinName);
             values.put(CURRENCY_TYPE, currencyName);
@@ -86,6 +87,7 @@ public class DbHelper {
         }
 
         public Cursor getCoinPair() {
+            sqLiteDatabase = coinDbHelper.getReadableDatabase();
             String[] columns = {COIN_TYPE, CURRENCY_TYPE, CURRENCY_VALUE};
             Cursor cursor = sqLiteDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
             if (cursor != null) {
