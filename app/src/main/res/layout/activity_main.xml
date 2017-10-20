@@ -86,7 +86,7 @@
         android:layout_weight="10">
 
         <Button
-            android:id="@+id/btn_calculate"
+            android:id="@+id/convert"
             android:layout_width="0dp"
             android:layout_weight="30"
             android:layout_height="match_parent"

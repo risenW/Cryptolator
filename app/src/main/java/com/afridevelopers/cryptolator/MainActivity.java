@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,14 +29,14 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     private EditText input_value;
     private TextView output;
-    private Context context;
     private Spinner spinner_coin,spinner_currency;
-    private Button calculate,add_to_list,show_list;
+    private Button convert,add_to_list,show_list;
     private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
     private CalculationHelper calculationHelper;
     private DbHelper dbHelper;
+    private String standardConversion;
     private final String INPUT = "input", OUTPUT = "output", COIN = "coin", CURRENCY = "currency";   //Keys for saving in preference
 
     @Override
@@ -68,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         input_value = (EditText)findViewById(R.id.amount);
         output = (TextView)findViewById(R.id.output);
-        calculate = (Button)findViewById(R.id.btn_calculate);
+        convert = (Button)findViewById(R.id.convert);
         add_to_list = (Button)findViewById(R.id.btn_add_to_list);
         show_list = (Button)findViewById(R.id.show_list);
         spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
@@ -78,26 +75,27 @@ public class MainActivity extends AppCompatActivity {
 
         //Gets the saved preference to enable consistency
         SharedPreferences preferences = getSharedPreferences(MY_PREF,0);
-        input_value.setText(preferences.getString(INPUT,"0.0"));
+        input_value.setText(preferences.getString(INPUT,"1"));
         output.setText(preferences.getString(OUTPUT,"0.0"));
         spinner_coin.setSelection(preferences.getInt(COIN,0));
         spinner_currency.setSelection(preferences.getInt(CURRENCY,0));
 
-        //Conversion button gets the user value and Starts the Async class to fetch the data from the API
-        calculate.setOnClickListener(new View.OnClickListener() {
+        //Convert button gets the user value and Starts an Async task to fetch the data from the API
+        convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calculationHelper = new CalculationHelper();
 
-                value_to_convert = Double.parseDouble(input_value.getText().toString());  // Gets the entered string and cast it to a double type
-                selected_coin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
-                selected_currency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
-                url = buildUrl(selected_coin,selected_currency);  //Calls the method to build the request Url
+                value_to_convert = Double.parseDouble(input_value.getText().toString());  // Gets the user's value
+                selected_coin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());  // Gets the user's selected coin
+                selected_currency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()); // Gets the user's selected currency
+                url = buildUrl(selected_coin,selected_currency);  //Calls a method to build the request Url
 
                 new GetContacts().execute();
             }
         });
 
+        //Saves the input and result to the database to be used in the Recycler view
         add_to_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,13 +103,13 @@ public class MainActivity extends AppCompatActivity {
                     dbHelper.open();
 
                     String tempCoin,tempCurrency;
-                    double value;
+                    double tempValue;
                     tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
                     tempCurrency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
-                    value = Double.parseDouble(input_value.getText().toString());
-
-                    dbHelper.insertPair(tempCoin,tempCurrency,value);
+                    tempValue = Double.parseDouble(standardConversion);
+                    dbHelper.insertPair(tempCoin,tempCurrency,tempValue);
                     Log.d("Insertion","Values Inserted");
+                    Log.e(TAG, "Standard conversion is " + standardConversion);
                     Toast.makeText(MainActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                     dbHelper.close();
 
@@ -159,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // Showing progress dialog
             pDialog = new ProgressDialog(MainActivity.this);
             pDialog.setMessage("Converting...");
             pDialog.setCancelable(false);
@@ -170,18 +167,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             HttpHandler serviceHandler = new HttpHandler();
-            // Making a request to url and getting response
             String jsonStr = serviceHandler.makeServiceCall(url);
             Log.e(TAG, "Response from url: " + jsonStr);
 
             if (jsonStr != null) {
                 try {
-                    String currency;
+                    String returnedValue;
                         JSONObject myObject = new JSONObject(jsonStr);
-                        currency = myObject.getString(selected_currency);
-                        Log.e(TAG, "Returned value is " + selected_currency + ": " + currency);
-
-                        price = calculationHelper.convert(value_to_convert,currency); //Converts the value
+                        returnedValue = myObject.getString(selected_currency);
+                        standardConversion = returnedValue;                                           //Sets the standard conversion rate of 1.
+                        Log.e(TAG, "Returned value is " + selected_currency + ": " + standardConversion);
+                        price = calculationHelper.convert(value_to_convert,returnedValue);           //Converts the value to user defined figure
 
 
                 } catch (final JSONException e) {
@@ -218,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            // Dismiss the progress dialog
             if (pDialog.isShowing())
                 pDialog.dismiss();
             // Updating converted value to the output textview
