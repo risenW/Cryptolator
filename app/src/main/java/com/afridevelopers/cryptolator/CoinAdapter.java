@@ -17,6 +17,8 @@ import java.util.zip.Inflater;
 
 public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHolder>{
     private ArrayList<Coin> coinArrayList;
+    private MyItemClickListener clickListener;
+    private MyItemLongClickListener longClickListener;
 
     public CoinAdapter(ArrayList<Coin> coinArrayList) {
         this.coinArrayList = coinArrayList;
@@ -25,7 +27,7 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.coin_cardview,parent,false);
-        RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
+        RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view,clickListener,longClickListener);
         return recyclerViewHolder;
     }
 
@@ -43,17 +45,52 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
         return coinArrayList.size();
     }
 
-    public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
+
+
+    //item listeners for Adapter
+    public void setClickListener(MyItemClickListener listener){
+        this.clickListener = listener;
+    }
+
+    public void setLongClickListener(MyItemLongClickListener longClickListener){
+        this.longClickListener = longClickListener;
+    }
+
+
+    //ViewHolder inner class
+
+    public static class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
         TextView coin,currency,currency_value;
+        private MyItemClickListener itemClickListener;
+        private MyItemLongClickListener itemLongClickListener;
 
-        public RecyclerViewHolder(View itemView) {
-            super(itemView);
+        public RecyclerViewHolder(View arg0,MyItemClickListener listener,MyItemLongClickListener itemLongClickListener) {
+            super(arg0);
 
-            coin = (TextView)itemView.findViewById(R.id.coin_name);
-            currency = (TextView)itemView.findViewById(R.id.currency);
-            currency_value = (TextView)itemView.findViewById(R.id.currency_value);
+            coin = (TextView)arg0.findViewById(R.id.coin_name);
+            currency = (TextView)arg0.findViewById(R.id.currency);
+            currency_value = (TextView)arg0.findViewById(R.id.currency_value);
+            this.itemClickListener = listener;
+            this.itemLongClickListener = itemLongClickListener;
+            arg0.setOnClickListener(this);
+            arg0.setOnLongClickListener(this);
 
 
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (itemClickListener != null){
+                itemClickListener.onItemClick(view,getPosition());
+            }
+        }
+
+        @Override
+        public boolean onLongClick(View arg0) {
+            if (itemLongClickListener != null){
+                itemLongClickListener.onItemLongClick(arg0,getPosition());
+            }
+            return true;
         }
     }
 }
