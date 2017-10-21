@@ -1,10 +1,10 @@
 package com.afridevelopers.cryptolator;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,31 +30,24 @@ public class MainActivity extends AppCompatActivity {
     private EditText input_value;
     private TextView output;
     private Spinner spinner_coin,spinner_currency;
-    private Button convert,add_to_list,show_list;
+    private Button convert,add_to_list;
     private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
     private CalculationHelper calculationHelper;
     private DbHelper dbHelper;
-    private String standardConversion;
-    private final String INPUT = "input", OUTPUT = "output", COIN = "coin", CURRENCY = "currency";   //Keys for saving in preference
+    private RecyclerList RecyclerlistObject;
+    private String standardConversion = "";
+    public static int index;
+    private final String INDEX_VALUE = "indexValue";   //Key for saving index in preference
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //Saves the last entered value and result.
-        SharedPreferences preferences = getSharedPreferences(MY_PREF, 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(INPUT,input_value.getText().toString());
-        editor.putString(OUTPUT,output.getText().toString());
-        editor.putInt(COIN,spinner_coin.getSelectedItemPosition());
-        editor.putInt(CURRENCY,spinner_currency.getSelectedItemPosition());
-        editor.apply();
-
-        Log.e(TAG, "Saved in Preference input: " + input_value.getText().toString() +
-                " output: " + output.getText().toString() + " coin: " +
-                calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition()) +
-                " currency: " + calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()) );
+        Intent intent = new Intent(MainActivity.this,RecyclerList.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -67,18 +60,33 @@ public class MainActivity extends AppCompatActivity {
         output = (TextView)findViewById(R.id.output);
         convert = (Button)findViewById(R.id.convert);
         add_to_list = (Button)findViewById(R.id.btn_add_to_list);
-        show_list = (Button)findViewById(R.id.show_list);
         spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
         spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
         dbHelper = new DbHelper(this);
+        RecyclerlistObject = new RecyclerList();
+        calculationHelper = new CalculationHelper();
 
+//        Intent from Recycler Activity
+        Bundle extras = getIntent().getExtras();
+        String first_time_checker = extras.getString("new_user");
+        String tempCoinHolder = extras.getString(RecyclerlistObject.coinType);
+        String tempCurrHolder = extras.getString(RecyclerlistObject.currencyType);
+        String tempValue = String.valueOf(extras.getDouble(RecyclerlistObject.valueHolder));
+        Log.d("Clicked",tempCoinHolder + " " + tempCurrHolder + " " + tempValue);
 
-        //Gets the saved preference to enable consistency
-        SharedPreferences preferences = getSharedPreferences(MY_PREF,0);
-        input_value.setText(preferences.getString(INPUT,"1"));
-        output.setText(preferences.getString(OUTPUT,"0.0"));
-        spinner_coin.setSelection(preferences.getInt(COIN,0));
-        spinner_currency.setSelection(preferences.getInt(CURRENCY,0));
+        if (first_time_checker.equals("yes")){
+            spinner_coin.setSelection(0);
+            spinner_currency.setSelection(0);
+            input_value.setText("1");
+            output.setText("0.0");
+
+        } else {
+            spinner_coin.setSelection(calculationHelper.getCoinSelectedFromText(tempCoinHolder));
+            spinner_currency.setSelection(calculationHelper.getCurrencySelectedFromText(tempCurrHolder));
+            input_value.setText("1");
+            output.setText(tempValue);
+        }
+
 
         //Convert button gets the user value and Starts an Async task to fetch the data from the API
         convert.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 selected_currency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()); // Gets the user's selected currency
                 url = buildUrl(selected_coin,selected_currency);  //Calls a method to build the request Url
 
-                new GetContacts().execute();
+                //Calls the Async class
+                new GetCurrentData().execute();
             }
         });
 
@@ -99,15 +108,20 @@ public class MainActivity extends AppCompatActivity {
         add_to_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    dbHelper.open();
 
+                try {
+                    index = getSavedIndex();   //Index is used when deleting an item from the database and Recycler view.
+                    index++;
+                    dbHelper.open();
+                    if (standardConversion.equals("")){
+                        standardConversion = "0.0";
+                    }
                     String tempCoin,tempCurrency;
                     double tempValue;
                     tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
                     tempCurrency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
                     tempValue = Double.parseDouble(standardConversion);
-                    dbHelper.insertPair(tempCoin,tempCurrency,tempValue);
+                    dbHelper.insertPair(index,tempCoin,tempCurrency,tempValue);
                     Log.d("Insertion","Values Inserted");
                     Log.e(TAG, "Standard conversion is " + standardConversion);
                     Toast.makeText(MainActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
@@ -116,23 +130,27 @@ public class MainActivity extends AppCompatActivity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+                //Saves the current index
+                saveIndexInPref();
             }
         });
 
-        show_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    startActivity(new Intent(MainActivity.this,RecyclerList.class));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
+    private void saveIndexInPref() {
+        SharedPreferences preferences = getSharedPreferences(MY_PREF, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(INDEX_VALUE,index);
+        editor.apply();
+        Log.d("Saved Index", "" + index);
+    }
 
-
+    public int getSavedIndex() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MY_PREF,0);
+        int savedIndex = sharedPreferences.getInt(INDEX_VALUE,-1);
+        Log.d("Returned Index:", "" + savedIndex);
+        return savedIndex;
+    }
 
 
     /**
@@ -146,11 +164,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Async task class to get json by making HTTP call
      */
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+    private class GetCurrentData extends AsyncTask<Void, Void, Void> {
          String price;
 
 
@@ -191,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setIcon(getResources().getDrawable(R.drawable.facebook));
+                        builder.setIcon(getResources().getDrawable(R.drawable.icon));
                         builder.setTitle("Sorry");
                         builder.setMessage("There was an error converting to your currency." +
                                 "Please check your internet Connection and try again");

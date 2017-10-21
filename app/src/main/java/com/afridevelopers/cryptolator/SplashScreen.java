@@ -23,7 +23,7 @@ public class SplashScreen extends Activity {
         Animation animation = AnimationUtils.loadAnimation(this,R.anim.transition);
         splashImage.startAnimation(animation);
 
-        final Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, RecyclerList.class);
 
         Thread timer = new Thread(){
             @Override

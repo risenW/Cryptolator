@@ -44,6 +44,21 @@ public class CalculationHelper {
         return temp;
     }
 
+    public int getCoinSelectedFromText(String coin){
+        int temp;
+        switch (coin){
+            case "BTC":
+                temp = 0;
+                break;
+            case "ETH":
+                temp = 1;
+                break;
+            default:
+                temp = 0;
+        }
+        return temp;
+    }
+
     public String getCurrencySelected(int value){
         String temp;
         switch (value){
@@ -118,6 +133,85 @@ public class CalculationHelper {
                 break;
             default:
                 temp = "USD";
+
+        }
+        return temp;
+    }
+
+    public int getCurrencySelectedFromText(String currency){
+        int temp;
+        switch (currency){
+            case "USD":
+                temp = 0;
+                break;
+            case "NGN":
+                temp = 1;
+                break;
+            case "EUR":
+                temp = 2;
+                break;
+            case  "JPY":
+                temp =3;
+                break;
+            case "GBP":
+                temp = 4;
+                break;
+            case "AUD":
+                temp = 5;
+                break;
+            case "CAD":
+                temp = 6;
+                break;
+            case "CHF":
+                temp = 7;
+                break;
+            case "CNY":
+                temp = 8;
+                break;
+            case "SEK":
+                temp = 9;
+                break;
+            case "MXN":
+                temp = 10;
+                break;
+            case "NZD":
+                temp = 11;
+                break;
+            case "SGD":
+                temp = 12;
+                break;
+            case "HKD":
+                temp = 13;
+                break;
+            case "NOK":
+                temp = 14;
+                break;
+            case "KRW":
+                temp = 15 ;
+                break;
+            case "TRY":
+                temp = 16;
+                break;
+            case "INR":
+                temp = 17;
+                break;
+            case "RUB":
+                temp = 18;
+                break;
+            case "BRL":
+                temp = 19;
+                break;
+            case "ZAR":
+                temp = 20;
+                break;
+            case "DKK":
+                temp = 21;
+                break;
+            case "PLN":
+                temp = 22;
+                break;
+            default:
+                temp = 0;
 
         }
         return temp;

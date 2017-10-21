@@ -17,6 +17,7 @@ public class DbHelper {
     private static final String DB_NAME = "CrytoDataBase";
     private static final int DB_VERSION = 1;
     private static final String TABLE_NAME = "CrytoTable";
+    private static final String INDEX = "id";
     private static final String COIN_TYPE = "coinType";
     private static final String CURRENCY_TYPE = "currencyType";
     private static final String CURRENCY_VALUE = "currencyValue";
@@ -25,7 +26,8 @@ public class DbHelper {
     private Context context;
 
     private static final String CREATE_QUERY = "create table " + TABLE_NAME +
-            "(" + COIN_TYPE + " text,"
+            "( " + INDEX + " INTEGER, "
+            + COIN_TYPE + " text,"
             + CURRENCY_TYPE + " text,"
             + CURRENCY_VALUE + " double);";
     private static final String DROP_QUERY = "drop table if exist " + TABLE_NAME + ";";
@@ -75,9 +77,10 @@ public class DbHelper {
         }
     }
 
-        public void insertPair(String coinName, String currencyName, double currencyValue) {
+        public void insertPair(int index, String coinName, String currencyName, double currencyValue) {
             sqLiteDatabase = coinDbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
+            values.put(INDEX,index);
             values.put(COIN_TYPE, coinName);
             values.put(CURRENCY_TYPE, currencyName);
             values.put(CURRENCY_VALUE, currencyValue);
@@ -88,13 +91,20 @@ public class DbHelper {
 
         public Cursor getCoinPair() {
             sqLiteDatabase = coinDbHelper.getReadableDatabase();
-            String[] columns = {COIN_TYPE, CURRENCY_TYPE, CURRENCY_VALUE};
+            String[] columns = {INDEX,COIN_TYPE, CURRENCY_TYPE, CURRENCY_VALUE};
             Cursor cursor = sqLiteDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();
             }
             return cursor;
         }
+
+    public void deletePairByID(int index){
+        sqLiteDatabase = coinDbHelper.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME,INDEX + "=?",new String[]{String.valueOf(index)});
+        Log.d("DBHELPER","Deletion successful");
+
+    }
 
 
     }
