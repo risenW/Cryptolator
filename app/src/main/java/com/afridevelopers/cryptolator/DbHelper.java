@@ -20,16 +20,18 @@ public class DbHelper {
     private static final String INDEX = "id";
     private static final String COIN_TYPE = "coinType";
     private static final String CURRENCY_TYPE = "currencyType";
+    private static final String INPUT_VALUE = "inputValue";
     private static final String CURRENCY_VALUE = "currencyValue";
     private SQLiteDatabase sqLiteDatabase;
     private CoinDbHelper coinDbHelper;
     private Context context;
 
-    private static final String CREATE_QUERY = "create table " + TABLE_NAME +
-            "( " + INDEX + " INTEGER, "
+    private static final String CREATE_QUERY = "create table " + TABLE_NAME + "( "
+            + INDEX + " INTEGER, "
             + COIN_TYPE + " text,"
             + CURRENCY_TYPE + " text,"
-            + CURRENCY_VALUE + " double);";
+            + INPUT_VALUE + " text,"
+            + CURRENCY_VALUE + " text);";
     private static final String DROP_QUERY = "drop table if exist " + TABLE_NAME + ";";
     private static final String DEBUDTAG = "Database Debug";
 
@@ -77,12 +79,13 @@ public class DbHelper {
         }
     }
 
-        public void insertPair(int index, String coinName, String currencyName, double currencyValue) {
+        public void insertPair(int index, String coinName, String currencyName,String inputValue, String currencyValue) {
             sqLiteDatabase = coinDbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(INDEX,index);
             values.put(COIN_TYPE, coinName);
             values.put(CURRENCY_TYPE, currencyName);
+            values.put(INPUT_VALUE, inputValue);
             values.put(CURRENCY_VALUE, currencyValue);
             sqLiteDatabase.insert(TABLE_NAME, null, values);
             Log.d(DEBUDTAG, "One row inserted...");
@@ -91,7 +94,7 @@ public class DbHelper {
 
         public Cursor getCoinPair() {
             sqLiteDatabase = coinDbHelper.getReadableDatabase();
-            String[] columns = {INDEX,COIN_TYPE, CURRENCY_TYPE, CURRENCY_VALUE};
+            String[] columns = {INDEX,COIN_TYPE, CURRENCY_TYPE,INPUT_VALUE, CURRENCY_VALUE};
             Cursor cursor = sqLiteDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();

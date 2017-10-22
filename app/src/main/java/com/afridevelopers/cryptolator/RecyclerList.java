@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,12 +26,28 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
     //Used as Intent Keys
     public String coinType = "coinType";
     public String currencyType = "currType";
-    public String valueHolder = "value";
+    public String inputValueHolder = "input_value";
+    public String convertedValueHolder = "value";
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+       AlertDialog.Builder builder = new AlertDialog.Builder(RecyclerList.this);
+        builder.setTitle("Exit Cryptolator");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -45,10 +61,17 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
-        //Populates the coin Array list;
+        //Calls the method to Populates the coin Array list;
         fillAdapter();
+        //Calls the Method to check if the array list is empty, signifying if it is a first time install.
+        check_if_array_empty();
 
-        //Checks if the Recycler View is empty
+    }
+
+
+
+//    Method to check if the array list is empty
+    private void check_if_array_empty() {
         if (coinArrayList.size() == 0){
 
             AlertDialog.Builder builder = new AlertDialog.Builder(RecyclerList.this);
@@ -57,11 +80,12 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(RecyclerList.this,MainActivity.class);
+                    Intent intent = new Intent(RecyclerList.this,ConversionActivity.class);
                     intent.putExtra("new_user","yes");   //Notifies the Main activity that it is a first time install
                     intent.putExtra(coinType,0);         //Sets the views to default values
                     intent.putExtra(currencyType,0);
-                    intent.putExtra(valueHolder,0.0);
+                    intent.putExtra(inputValueHolder,1);
+                    intent.putExtra(convertedValueHolder,0.0);
                     startActivity(intent);
                 }
             });
@@ -73,9 +97,9 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             });
             builder.show();
         }
-
     }
 
+//    method to Populates the Array list ans set the Adapter;
     private void fillAdapter() {
         try {
             DbHelper dbHelper = new DbHelper(this);
@@ -83,7 +107,7 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             Cursor cursor = dbHelper.getCoinPair();
             if (cursor != null){
                 do{
-                    Coin coin = new Coin(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getDouble(3));
+                    Coin coin = new Coin(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
                     coinArrayList.add(coin);
                 } while (cursor.moveToNext());
             }
@@ -98,39 +122,59 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
         }
     }
 
+    //OnItemClick starts the Conversion Activity with the selected values.
     @Override
     public void onItemClick(View view, int position) {
         Coin coin = coinArrayList.get(position);
         if (coin != null){
-            Intent intent = new Intent(RecyclerList.this,MainActivity.class);
+            Intent intent = new Intent(RecyclerList.this,ConversionActivity.class);
             intent.putExtra("new_user","no");
             intent.putExtra(coinType,coin.getCoin_type());
             intent.putExtra(currencyType,coin.getCurrency());
-            intent.putExtra(valueHolder,coin.getCurrency_value());
+            intent.putExtra(inputValueHolder,coin.getInput_value());
+            intent.putExtra(convertedValueHolder,coin.getCurrency_value());
             startActivity(intent);
 
         }
 
     }
 
+    //OnLongClick deletes an item from the recycler view and database
     @Override
-    public void onItemLongClick(View view, int position) {
-        DbHelper dbHelper = new DbHelper(RecyclerList.this);
-        Coin coin = coinArrayList.get(position);
-        if (coin != null){
-            try {
-                dbHelper.open();
-                dbHelper.deletePairByID(coin.getIndex());  //Deletes coin object from the database with the help of the unique index value
-                coinArrayList.remove(position);             //Removes coin object from Recycler view as well
-                coinAdapter.notifyItemRemoved(position);
-                coinAdapter.notifyDataSetChanged();
-                Toast.makeText(RecyclerList.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
-                dbHelper.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+    public void onItemLongClick(View view, final int position) {
+       AlertDialog.Builder builder = new AlertDialog.Builder(RecyclerList.this);
+        builder.setTitle("Delete this item");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DbHelper dbHelper = new DbHelper(RecyclerList.this);
+                Coin coin = coinArrayList.get(position);
+                if (coin != null){
+                    try {
+                        dbHelper.open();
+                        dbHelper.deletePairByID(coin.getIndex());  //Deletes coin object from the database with the help of the unique index value
+                        coinArrayList.remove(position);             //Removes coin object from Recycler view as well
+                        coinAdapter.notifyItemRemoved(position);
+                        coinAdapter.notifyDataSetChanged();
+                        Toast.makeText(RecyclerList.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                        dbHelper.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
 
-        }
+
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+        //Checks if array is empty after every deletion;
+        check_if_array_empty();
 
     }
 

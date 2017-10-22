@@ -35,8 +35,9 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Coin coin = coinArrayList.get(position);
         holder.coin.setText(coin.getCoin_type());
-        holder.currency_value.setText(String.valueOf(coin.getCurrency_value()));
         holder.currency.setText(coin.getCurrency());
+        holder.input_value.setText(String.valueOf(coin.getInput_value()));
+        holder.currency_value.setText(String.valueOf(coin.getCurrency_value()));
 
     }
 
@@ -60,7 +61,7 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
     //ViewHolder inner class
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
-        TextView coin,currency,currency_value;
+        TextView coin,currency,input_value,currency_value;
         private MyItemClickListener itemClickListener;
         private MyItemLongClickListener itemLongClickListener;
 
@@ -69,6 +70,7 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
 
             coin = (TextView)arg0.findViewById(R.id.coin_name);
             currency = (TextView)arg0.findViewById(R.id.currency);
+            input_value = (TextView)arg0.findViewById(R.id.input_value);
             currency_value = (TextView)arg0.findViewById(R.id.currency_value);
             this.itemClickListener = listener;
             this.itemLongClickListener = itemLongClickListener;

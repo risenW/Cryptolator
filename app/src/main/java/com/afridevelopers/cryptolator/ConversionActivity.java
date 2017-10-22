@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,10 +21,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class ConversionActivity extends AppCompatActivity {
 
     private static final String MY_PREF = "my_preference";
-    private String TAG = MainActivity.class.getSimpleName();
+    private String TAG = ConversionActivity.class.getSimpleName();
     private ProgressDialog pDialog;
     private EditText input_value;
     private TextView output;
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private CalculationHelper calculationHelper;
     private DbHelper dbHelper;
     private RecyclerList RecyclerlistObject;
-    private String standardConversion = "";
     public static int index;
     private final String INDEX_VALUE = "indexValue";   //Key for saving index in preference
 
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(MainActivity.this,RecyclerList.class);
+        Intent intent = new Intent(ConversionActivity.this,RecyclerList.class);
         startActivity(intent);
         finish();
     }
@@ -71,10 +69,11 @@ public class MainActivity extends AppCompatActivity {
         String first_time_checker = extras.getString("new_user");
         String tempCoinHolder = extras.getString(RecyclerlistObject.coinType);
         String tempCurrHolder = extras.getString(RecyclerlistObject.currencyType);
-        String tempValue = String.valueOf(extras.getDouble(RecyclerlistObject.valueHolder));
-        Log.d("Clicked",tempCoinHolder + " " + tempCurrHolder + " " + tempValue);
+        String tempInputValue = extras.getString(RecyclerlistObject.inputValueHolder);
+        String tempConvertedValue = extras.getString(RecyclerlistObject.convertedValueHolder);
+        Log.d("Clicked",tempCoinHolder + " " + tempCurrHolder + " " + tempConvertedValue +" " + tempInputValue);
 
-        if (first_time_checker.equals("yes")){
+        if (first_time_checker.equals("yes")){       //Default state for first time users
             spinner_coin.setSelection(0);
             spinner_currency.setSelection(0);
             input_value.setText("1");
@@ -83,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             spinner_coin.setSelection(calculationHelper.getCoinSelectedFromText(tempCoinHolder));
             spinner_currency.setSelection(calculationHelper.getCurrencySelectedFromText(tempCurrHolder));
-            input_value.setText("1");
-            output.setText(tempValue);
+            input_value.setText(tempInputValue);
+            output.setText(tempConvertedValue);
         }
 
 
@@ -113,19 +112,16 @@ public class MainActivity extends AppCompatActivity {
                     index = getSavedIndex();   //Index is used when deleting an item from the database and Recycler view.
                     index++;
                     dbHelper.open();
-                    if (standardConversion.equals("")){
-                        standardConversion = "0.0";
-                    }
-                    String tempCoin,tempCurrency;
-                    double tempValue;
+                    String tempCoin,tempCurrency,tempConvertedValue,tempInputValue;
                     tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
                     tempCurrency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
-                    tempValue = Double.parseDouble(standardConversion);
-                    dbHelper.insertPair(index,tempCoin,tempCurrency,tempValue);
-                    Log.d("Insertion","Values Inserted");
-                    Log.e(TAG, "Standard conversion is " + standardConversion);
-                    Toast.makeText(MainActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    tempInputValue = input_value.getText().toString();
+                    tempConvertedValue = output.getText().toString();
+                    dbHelper.insertPair(index,tempCoin,tempCurrency,tempInputValue,tempConvertedValue);
                     dbHelper.close();
+                    Log.d("Insertion","Values Inserted");
+                    Toast.makeText(ConversionActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -174,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog = new ProgressDialog(ConversionActivity.this);
             pDialog.setMessage("Converting...");
             pDialog.setCancelable(false);
             pDialog.show();
@@ -192,8 +188,6 @@ public class MainActivity extends AppCompatActivity {
                     String returnedValue;
                         JSONObject myObject = new JSONObject(jsonStr);
                         returnedValue = myObject.getString(selected_currency);
-                        standardConversion = returnedValue;                                           //Sets the standard conversion rate of 1.
-                        Log.e(TAG, "Returned value is " + selected_currency + ": " + standardConversion);
                         price = calculationHelper.convert(value_to_convert,returnedValue);           //Converts the value to user defined figure
 
 
@@ -207,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ConversionActivity.this);
                         builder.setIcon(getResources().getDrawable(R.drawable.icon));
                         builder.setTitle("Sorry");
                         builder.setMessage("There was an error converting to your currency." +
