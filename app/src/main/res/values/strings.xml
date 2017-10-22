@@ -13,11 +13,13 @@
                                 up to date and in real time. Supported currencies: USD,EUR,NGN,JPY/GBP,AUD
                                 ,CAD,CHF,CNY,SEK,MXN,NZD,SGD,SGD,HKD,NOK,KRW,TYR,INR,RUB,BRL,ZAR,DKK,PLN</string>
     <string name="connect_developer">Connect with the Developer</string>
-    <string name="add">Add</string>
+    <string name="add">Add Pair</string>
+    <string name="my_list">My List</string>
+    <string name="btc_symbol">\u20BF</string>
 
     <string-array name="coins">
         <item>Bitcoin BTC</item>
-        <item>Etherelium ETH</item>
+        <item>Ethereum ETH</item>
     </string-array>
 
     <string-array name="currency">
@@ -44,7 +46,33 @@
         <item>South African Rand ZAR</item>
         <item>Danish Krone DKK</item>
         <item>Polish Zloty PLN</item>
+    </string-array>
 
+    <string-array name="currency_symbols">
+        <item>\u0024</item>
+        <item>\u20A6</item>
+        <item>\u20AC</item>
+        <item>\u00A5</item>
+        <item>\u00A3</item>
+        <item>\u0024</item>
+        <item>\u0024</item>
+        <item>\u20A3</item>
+        <item>\u00A5</item>
+        <item>\u006B</item>
+        <item>\u20B1</item>
+        <item>\u0024</item>
+        <item>\u0024</item>
+        <item>\u0024</item>
+        <item>\u20BB</item>
+        <item>\u20A9</item>
+        <item>\u20BA</item>
+        <item>\u20B9</item>
+        <item>\u20BD</item>
+        <item>\u20A2</item>
+        <item>\u0052</item>
+        <item>\006B</item>
+        <item>\u007A</item>
 
     </string-array>
+
 </resources>

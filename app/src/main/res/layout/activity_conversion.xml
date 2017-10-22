@@ -22,7 +22,8 @@
             android:layout_weight="50"
             android:entries="@array/coins"
             android:gravity="top"
-            style="@style/spinner" />
+            style="@style/spinner"
+            />
 
     </LinearLayout>
 
@@ -90,19 +91,22 @@
             android:layout_width="0dp"
             android:layout_weight="50"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
             android:text="@string/calculateBtn"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+            style="@style/conversionBtns" />
         <Button
             android:id="@+id/btn_add_to_list"
             android:layout_width="0dp"
             android:layout_weight="50"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
             android:text="@string/add"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
+            style="@style/conversionBtns" />
+        <Button
+            android:id="@+id/btn_goto_list"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="match_parent"
+            android:text="@string/my_list"
+            style="@style/conversionBtns" />
 
 
 

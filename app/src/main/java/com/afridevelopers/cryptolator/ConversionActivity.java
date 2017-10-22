@@ -29,7 +29,7 @@ public class ConversionActivity extends AppCompatActivity {
     private EditText input_value;
     private TextView output;
     private Spinner spinner_coin,spinner_currency;
-    private Button convert,add_to_list;
+    private Button convert,add_to_list,goto_list;
     private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
@@ -51,13 +51,14 @@ public class ConversionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_conversion);
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
         input_value = (EditText)findViewById(R.id.amount);
         output = (TextView)findViewById(R.id.output);
         convert = (Button)findViewById(R.id.convert);
         add_to_list = (Button)findViewById(R.id.btn_add_to_list);
+        goto_list = (Button)findViewById(R.id.btn_goto_list);
         spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
         spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
         dbHelper = new DbHelper(this);
@@ -113,14 +114,19 @@ public class ConversionActivity extends AppCompatActivity {
                     index++;
                     dbHelper.open();
                     String tempCoin,tempCurrency,tempConvertedValue,tempInputValue;
+                    int coin_Image_Id,currency_Image_Id;
+
+                    coin_Image_Id = spinner_coin.getSelectedItemPosition();
                     tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
+                    currency_Image_Id = spinner_currency.getSelectedItemPosition();                     //gets the image id from the selected spinner item
                     tempCurrency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
                     tempInputValue = input_value.getText().toString();
                     tempConvertedValue = output.getText().toString();
-                    dbHelper.insertPair(index,tempCoin,tempCurrency,tempInputValue,tempConvertedValue);
+                    //Makes the insertion in Database
+                    dbHelper.insertPair(index,coin_Image_Id,tempCoin,currency_Image_Id,tempCurrency,tempInputValue,tempConvertedValue);
                     dbHelper.close();
                     Log.d("Insertion","Values Inserted");
-                    Toast.makeText(ConversionActivity.this, "The Pair has been added to your list", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ConversionActivity.this, "The Pair has been added to your list", Toast.LENGTH_SHORT).show();
 
 
                 }catch (Exception e){
@@ -128,6 +134,15 @@ public class ConversionActivity extends AppCompatActivity {
                 }
                 //Saves the current index
                 saveIndexInPref();
+            }
+        });
+
+        goto_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ConversionActivity.this,RecyclerList.class);
+                startActivity(intent);
+                finish();
             }
         });
 

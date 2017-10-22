@@ -106,8 +106,8 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             dbHelper.open();
             Cursor cursor = dbHelper.getCoinPair();
             if (cursor != null){
-                do{
-                    Coin coin = new Coin(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
+                do{                       //index           //coin_image      //coin_type     //currency_icon   //currency_type      //input value      //output value
+                    Coin coin = new Coin(cursor.getInt(0),cursor.getInt(1),cursor.getString(2),cursor.getInt(3),cursor.getString(5),cursor.getString(6),cursor.getString(7));
                     coinArrayList.add(coin);
                 } while (cursor.moveToNext());
             }
@@ -132,7 +132,7 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             intent.putExtra(coinType,coin.getCoin_type());
             intent.putExtra(currencyType,coin.getCurrency());
             intent.putExtra(inputValueHolder,coin.getInput_value());
-            intent.putExtra(convertedValueHolder,coin.getCurrency_value());
+            intent.putExtra(convertedValueHolder,coin.getOutput_value());
             startActivity(intent);
 
         }
@@ -164,8 +164,6 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             }
         });

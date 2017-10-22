@@ -34,16 +34,18 @@
                 android:layout_width="0dp"
                 android:layout_weight="20"
                 android:layout_gravity="center"
+                android:src="@drawable/btc"
                 android:id="@+id/coin_image"
-                android:layout_height="50dp"
-                android:src="@drawable/facebook"/>
+                android:layout_height="30dp"
+                />
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="60"
                 android:id="@+id/input_value"
                 android:layout_height="wrap_content"
-                android:hint="1"
-                style="@style/cardViewValue" />
+                android:hint=""
+                style="@style/cardViewValue"
+                android:text="1" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="40"
@@ -59,18 +61,20 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight="20"
-                android:layout_gravity="center"
-                android:id="@+id/currency_image"
-                android:layout_height="50dp"
-                android:src="@drawable/instagram"/>
             <TextView
                 android:layout_width="0dp"
-                android:hint="4570.0021"
+                android:layout_weight="20"
+                android:textAlignment="center"
+                android:id="@+id/currency_image"
+                android:hint="\u0024"
+                android:textSize="30sp"
+                android:layout_height="50dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:text="4570.0021"
                 android:layout_weight="60"
-                android:id="@+id/currency_value"
+                android:id="@+id/output_value"
                 android:layout_height="wrap_content"
                 style="@style/cardViewValue" />
             <TextView

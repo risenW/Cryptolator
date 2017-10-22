@@ -18,20 +18,24 @@ public class DbHelper {
     private static final int DB_VERSION = 1;
     private static final String TABLE_NAME = "CrytoTable";
     private static final String INDEX = "id";
+    private static final String COIN_IMAGE = "coinImage";
     private static final String COIN_TYPE = "coinType";
+    private static final String CURRENCY_IMAGE = "currencyImage";
     private static final String CURRENCY_TYPE = "currencyType";
     private static final String INPUT_VALUE = "inputValue";
-    private static final String CURRENCY_VALUE = "currencyValue";
+    private static final String OUTPUT_VALUE = "currencyValue";
     private SQLiteDatabase sqLiteDatabase;
     private CoinDbHelper coinDbHelper;
     private Context context;
 
     private static final String CREATE_QUERY = "create table " + TABLE_NAME + "( "
             + INDEX + " INTEGER, "
-            + COIN_TYPE + " text,"
-            + CURRENCY_TYPE + " text,"
-            + INPUT_VALUE + " text,"
-            + CURRENCY_VALUE + " text);";
+            + COIN_IMAGE + " INTEGER,"
+            + COIN_TYPE + " TEXT,"
+            + CURRENCY_IMAGE + " INTEGER,"
+            + CURRENCY_TYPE + " TEXT,"
+            + INPUT_VALUE + " TEXT,"
+            + OUTPUT_VALUE + " TEXT);";
     private static final String DROP_QUERY = "drop table if exist " + TABLE_NAME + ";";
     private static final String DEBUDTAG = "Database Debug";
 
@@ -79,14 +83,16 @@ public class DbHelper {
         }
     }
 
-        public void insertPair(int index, String coinName, String currencyName,String inputValue, String currencyValue) {
+        public void insertPair(int index, int coinImageId,String coinName, int currencyImageId,String currencyName,String inputValue, String currencyValue) {
             sqLiteDatabase = coinDbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(INDEX,index);
+            values.put(COIN_IMAGE, coinImageId);
             values.put(COIN_TYPE, coinName);
+            values.put(CURRENCY_IMAGE, currencyImageId);
             values.put(CURRENCY_TYPE, currencyName);
             values.put(INPUT_VALUE, inputValue);
-            values.put(CURRENCY_VALUE, currencyValue);
+            values.put(OUTPUT_VALUE, currencyValue);
             sqLiteDatabase.insert(TABLE_NAME, null, values);
             Log.d(DEBUDTAG, "One row inserted...");
 
@@ -94,7 +100,7 @@ public class DbHelper {
 
         public Cursor getCoinPair() {
             sqLiteDatabase = coinDbHelper.getReadableDatabase();
-            String[] columns = {INDEX,COIN_TYPE, CURRENCY_TYPE,INPUT_VALUE, CURRENCY_VALUE};
+            String[] columns = {INDEX,COIN_IMAGE,COIN_TYPE,CURRENCY_IMAGE, CURRENCY_TYPE,INPUT_VALUE, OUTPUT_VALUE};
             Cursor cursor = sqLiteDatabase.query(TABLE_NAME, columns, null, null, null, null, null);
             if (cursor != null) {
                 cursor.moveToFirst();

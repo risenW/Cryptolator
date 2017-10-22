@@ -1,15 +1,14 @@
 package com.afridevelopers.cryptolator;
 
 
-import android.support.v7.widget.*;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 /**
  * Created by Risen on 10/17/2017.
@@ -34,10 +33,11 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Coin coin = coinArrayList.get(position);
+//        holder.currency_icon.setText(coin.get);
         holder.coin.setText(coin.getCoin_type());
         holder.currency.setText(coin.getCurrency());
         holder.input_value.setText(String.valueOf(coin.getInput_value()));
-        holder.currency_value.setText(String.valueOf(coin.getCurrency_value()));
+        holder.currency_value.setText(String.valueOf(coin.getOutput_value()));
 
     }
 
@@ -61,14 +61,17 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
     //ViewHolder inner class
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener{
-        TextView coin,currency,input_value,currency_value;
+        TextView coin, currency_icon,currency,input_value,currency_value;
+        ImageView coin_image;
         private MyItemClickListener itemClickListener;
         private MyItemLongClickListener itemLongClickListener;
 
         public RecyclerViewHolder(View arg0,MyItemClickListener listener,MyItemLongClickListener itemLongClickListener) {
             super(arg0);
 
+            coin_image = (ImageView)arg0.findViewById(R.id.coin_image);
             coin = (TextView)arg0.findViewById(R.id.coin_name);
+            currency_icon = (TextView)arg0.findViewById(R.id.currency_image);
             currency = (TextView)arg0.findViewById(R.id.currency);
             input_value = (TextView)arg0.findViewById(R.id.input_value);
             currency_value = (TextView)arg0.findViewById(R.id.currency_value);
