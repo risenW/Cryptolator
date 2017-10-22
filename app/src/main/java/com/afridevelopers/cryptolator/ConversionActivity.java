@@ -120,7 +120,7 @@ public class ConversionActivity extends AppCompatActivity {
                     dbHelper.insertPair(index,tempCoin,tempCurrency,tempInputValue,tempConvertedValue);
                     dbHelper.close();
                     Log.d("Insertion","Values Inserted");
-                    Toast.makeText(ConversionActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ConversionActivity.this, "The Pair has been added to your list", Toast.LENGTH_LONG).show();
 
 
                 }catch (Exception e){

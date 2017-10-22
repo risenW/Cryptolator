@@ -158,6 +158,9 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
                         coinAdapter.notifyDataSetChanged();
                         Toast.makeText(RecyclerList.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
                         dbHelper.close();
+
+                        //Checks if array is empty after every deletion;
+                        check_if_array_empty();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -173,8 +176,6 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             }
         });
         builder.show();
-        //Checks if array is empty after every deletion;
-        check_if_array_empty();
 
     }
 
