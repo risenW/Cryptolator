@@ -5,10 +5,10 @@ package com.afridevelopers.cryptolator;
  */
 
 public class Coin {
-    private String coin_type,currency, output_value,input_value;
-    private int index, coin_image_id,currency_image_id;
+    private String coin_type,currency, output_value,input_value,coin_image_id,currency_image_id;
+    private int index;
 
-    public Coin(int index, int coin_image_id,String coin_type, int currency_image_id,String currency, String input_value, String output_value) {
+    public Coin(int index, String coin_image_id,String coin_type, String currency_image_id,String currency, String input_value, String output_value) {
         this.index = index;
         this.coin_image_id = coin_image_id;
         this.coin_type = coin_type;
@@ -26,19 +26,19 @@ public class Coin {
         this.coin_type = coin_type;
     }
 
-    public int getCoin_image_id() {
+    public String getCoin_symbol() {
         return coin_image_id;
     }
 
-    public void setCoin_image_id(int coin_image_id) {
+    public void setCoin_image_id(String coin_image_id) {
         this.coin_image_id = coin_image_id;
     }
 
-    public int getCurrency_image_id() {
+    public String getCurrency_symbol() {
         return currency_image_id;
     }
 
-    public void setCurrency_image_id(int currency_image_id) {
+    public void setCurrency_image_id(String currency_image_id) {
         this.currency_image_id = currency_image_id;
     }
 

@@ -30,9 +30,9 @@ public class DbHelper {
 
     private static final String CREATE_QUERY = "create table " + TABLE_NAME + "( "
             + INDEX + " INTEGER, "
-            + COIN_IMAGE + " INTEGER,"
+            + COIN_IMAGE + " TEXT,"
             + COIN_TYPE + " TEXT,"
-            + CURRENCY_IMAGE + " INTEGER,"
+            + CURRENCY_IMAGE + " TEXT,"
             + CURRENCY_TYPE + " TEXT,"
             + INPUT_VALUE + " TEXT,"
             + OUTPUT_VALUE + " TEXT);";
@@ -83,7 +83,7 @@ public class DbHelper {
         }
     }
 
-        public void insertPair(int index, int coinImageId,String coinName, int currencyImageId,String currencyName,String inputValue, String currencyValue) {
+        public void insertPair(int index, String coinImageId,String coinName, String currencyImageId,String currencyName,String inputValue, String currencyValue) {
             sqLiteDatabase = coinDbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(INDEX,index);

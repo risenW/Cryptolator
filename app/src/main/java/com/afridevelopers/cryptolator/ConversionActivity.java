@@ -37,6 +37,7 @@ public class ConversionActivity extends AppCompatActivity {
     private DbHelper dbHelper;
     private RecyclerList RecyclerlistObject;
     public static int index;
+    private String[] currency_symbols, coin_drawable_id;
     private final String INDEX_VALUE = "indexValue";   //Key for saving index in preference
 
 
@@ -64,6 +65,8 @@ public class ConversionActivity extends AppCompatActivity {
         dbHelper = new DbHelper(this);
         RecyclerlistObject = new RecyclerList();
         calculationHelper = new CalculationHelper();
+        currency_symbols = getResources().getStringArray(R.array.currency_symbols);
+        coin_drawable_id = getResources().getStringArray(R.array.coin_symbols);
 
 //        Intent from Recycler Activity
         Bundle extras = getIntent().getExtras();
@@ -113,15 +116,15 @@ public class ConversionActivity extends AppCompatActivity {
                     index = getSavedIndex();   //Index is used when deleting an item from the database and Recycler view.
                     index++;
                     dbHelper.open();
-                    String tempCoin,tempCurrency,tempConvertedValue,tempInputValue;
-                    int coin_Image_Id,currency_Image_Id;
+                    String tempCoin,tempCurrency,tempConvertedValue,tempInputValue,coin_Image_Id,currency_Image_Id;
 
-                    coin_Image_Id = spinner_coin.getSelectedItemPosition();
-                    tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
-                    currency_Image_Id = spinner_currency.getSelectedItemPosition();                     //gets the image id from the selected spinner item
+                    coin_Image_Id = coin_drawable_id[spinner_coin.getSelectedItemPosition()];           //Gets the coin drawable id from the coin array
+                    currency_Image_Id = currency_symbols[spinner_coin.getSelectedItemPosition()];                     //gets the currency symbol from the selected array
                     tempCurrency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition());
+                    tempCoin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());
                     tempInputValue = input_value.getText().toString();
                     tempConvertedValue = output.getText().toString();
+
                     //Makes the insertion in Database
                     dbHelper.insertPair(index,coin_Image_Id,tempCoin,currency_Image_Id,tempCurrency,tempInputValue,tempConvertedValue);
                     dbHelper.close();

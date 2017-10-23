@@ -25,7 +25,9 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
     ArrayList<Coin> coinArrayList;
     //Used as Intent Keys
     public String coinType = "coinType";
+    public String coinSymbol = "coinSymbol";
     public String currencyType = "currType";
+    public String currencySymbol = "currencySymbol";
     public String inputValueHolder = "input_value";
     public String convertedValueHolder = "value";
 
@@ -83,7 +85,9 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
                     Intent intent = new Intent(RecyclerList.this,ConversionActivity.class);
                     intent.putExtra("new_user","yes");   //Notifies the Main activity that it is a first time install
                     intent.putExtra(coinType,0);         //Sets the views to default values
+//                    intent.putExtra(coinSymbol,0);
                     intent.putExtra(currencyType,0);
+//                    intent.putExtra(currencySymbol,0);
                     intent.putExtra(inputValueHolder,1);
                     intent.putExtra(convertedValueHolder,0.0);
                     startActivity(intent);
@@ -106,8 +110,8 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             dbHelper.open();
             Cursor cursor = dbHelper.getCoinPair();
             if (cursor != null){
-                do{                       //index           //coin_image      //coin_type     //currency_icon   //currency_type      //input value      //output value
-                    Coin coin = new Coin(cursor.getInt(0),cursor.getInt(1),cursor.getString(2),cursor.getInt(3),cursor.getString(5),cursor.getString(6),cursor.getString(7));
+                do{                       //index           //coin_icon      //coin_type       //currency_icon         //currency_type      //input value      //output value
+                    Coin coin = new Coin(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
                     coinArrayList.add(coin);
                 } while (cursor.moveToNext());
             }
@@ -130,7 +134,9 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             Intent intent = new Intent(RecyclerList.this,ConversionActivity.class);
             intent.putExtra("new_user","no");
             intent.putExtra(coinType,coin.getCoin_type());
+//            intent.putExtra(coinSymbol,coin.getCoin_symbol());
             intent.putExtra(currencyType,coin.getCurrency());
+//            intent.putExtra(currencySymbol,coin.getCurrency_symbol());
             intent.putExtra(inputValueHolder,coin.getInput_value());
             intent.putExtra(convertedValueHolder,coin.getOutput_value());
             startActivity(intent);
