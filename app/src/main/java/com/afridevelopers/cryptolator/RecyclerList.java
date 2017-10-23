@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +27,7 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
     ArrayList<Coin> coinArrayList;
     //Used as Intent Keys
     public String coinType = "coinType";
-    public String coinSymbol = "coinSymbol";
     public String currencyType = "currType";
-    public String currencySymbol = "currencySymbol";
     public String inputValueHolder = "input_value";
     public String convertedValueHolder = "value";
 
@@ -134,12 +134,16 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
             Intent intent = new Intent(RecyclerList.this,ConversionActivity.class);
             intent.putExtra("new_user","no");
             intent.putExtra(coinType,coin.getCoin_type());
-//            intent.putExtra(coinSymbol,coin.getCoin_symbol());
             intent.putExtra(currencyType,coin.getCurrency());
-//            intent.putExtra(currencySymbol,coin.getCurrency_symbol());
             intent.putExtra(inputValueHolder,coin.getInput_value());
             intent.putExtra(convertedValueHolder,coin.getOutput_value());
-            startActivity(intent);
+
+            //Creates a pair used in transition between coin and currency value
+            Pair<View, String> pair1 = Pair.create(findViewById(R.id.input_value),"coin_trans_name");
+            Pair<View, String> pair2 = Pair.create(findViewById(R.id.output_value),"currency_trans_name");
+
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(RecyclerList.this,pair1,pair2);
+            startActivity(intent,optionsCompat.toBundle());
 
         }
 
@@ -194,16 +198,20 @@ public class RecyclerList extends AppCompatActivity implements MyItemClickListen
         int id = item.getItemId();
 
         switch (id){
-
+            case R.id.menu_list:
+                Intent intent1 = new Intent(this,RecyclerList.class);
+                startActivity(intent1);
+                finish();
+                break;
             case R.id.about:
                 Intent intent = new Intent(this,About.class);
                 startActivity(intent);
                 break;
             case R.id.rate:
-
+                //Google play id goes here
                 break;
             case R.id.update:
-
+                //Google play id goes here
                 break;
 
             default:

@@ -264,16 +264,20 @@ public class ConversionActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id){
-
+            case R.id.menu_list:
+                Intent intent1 = new Intent(this,RecyclerList.class);
+                startActivity(intent1);
+                finish();
+                break;
             case R.id.about:
-                Intent intent = new Intent(this,About.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(this,About.class);
+                startActivity(intent2);
                 break;
             case R.id.rate:
-
+                    //Google play id goes here
                 break;
             case R.id.update:
-
+                //Google play id goes here
                 break;
 
             default:

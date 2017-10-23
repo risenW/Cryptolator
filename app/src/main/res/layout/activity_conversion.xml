@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:digits="0123456789."
+            android:transitionName="coin_trans_name"
             android:inputType="numberDecimal"
             style="@style/input_views">
             <requestFocus/>
@@ -75,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="@style/input_views"
+            android:transitionName="currency_trans_name"
             android:typeface="normal"
             android:background="@android:color/transparent" />
 
