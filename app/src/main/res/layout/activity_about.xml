@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/splashscreen"
+    android:background="@drawable/developed"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        android:layout_weight="10">
+        android:layout_weight="20">
 
         <ImageView
             android:layout_width="0dp"
@@ -51,36 +51,36 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:layout_weight="15">
+        android:layout_weight="10">
 
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:id="@+id/facebook"
             android:background="@drawable/facebook"/>
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:id="@+id/instagram"
             android:background="@drawable/instagram"/>
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
-            android:id="@+id/github"
+            android:layout_weight="15"
+            android:id="@+id/twitter"
             android:background="@drawable/twitter"/>
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:id="@+id/youtube"
             android:background="@drawable/youtube"/>
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_weight="14"
             android:id="@+id/website"
             android:background="@drawable/web"/>
 
