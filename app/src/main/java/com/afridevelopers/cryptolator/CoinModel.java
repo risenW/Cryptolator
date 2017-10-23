@@ -4,11 +4,14 @@ package com.afridevelopers.cryptolator;
  * Created by Risen on 10/17/2017.
  */
 
-public class Coin {
+public class CoinModel {
     private String coin_type,currency, output_value,input_value,coin_image_id,currency_image_id;
     private int index;
 
-    public Coin(int index, String coin_image_id,String coin_type, String currency_image_id,String currency, String input_value, String output_value) {
+    public CoinModel(int index, String coin_image_id, String coin_type,
+                     String currency_image_id, String currency,
+                     String input_value, String output_value) {
+
         this.index = index;
         this.coin_image_id = coin_image_id;
         this.coin_type = coin_type;

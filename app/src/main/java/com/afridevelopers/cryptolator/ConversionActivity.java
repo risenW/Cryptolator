@@ -33,10 +33,10 @@ public class ConversionActivity extends AppCompatActivity {
     private String selected_coin,selected_currency;
     private double value_to_convert;
     private static String url = "";
+    public static int index;
     private CalculationHelper calculationHelper;
     private DbHelper dbHelper;
     private RecyclerList RecyclerlistObject;
-    public static int index;
     private String[] currency_symbols, coin_drawable_id;
     private final String INDEX_VALUE = "indexValue";   //Key for saving index in preference
 
@@ -55,48 +55,16 @@ public class ConversionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conversion);
         overridePendingTransition(R.anim.slide_in,R.anim.slide_out);
 
-        input_value = (EditText)findViewById(R.id.amount);
-        output = (TextView)findViewById(R.id.output);
-        convert = (Button)findViewById(R.id.convert);
-        add_to_list = (Button)findViewById(R.id.btn_add_to_list);
-        goto_list = (Button)findViewById(R.id.btn_goto_list);
-        spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
-        spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
-        dbHelper = new DbHelper(this);
-        RecyclerlistObject = new RecyclerList();
-        calculationHelper = new CalculationHelper();
-        currency_symbols = getResources().getStringArray(R.array.currency_symbols);
-        coin_drawable_id = getResources().getStringArray(R.array.coin_symbols);
+        //Initializes all views, database, and classes
+        call_initializer();
+        // get bundles from Recycler Activity and sets the views respectively
+        get_extras_from_list();
 
-//        Intent from Recycler Activity
-        Bundle extras = getIntent().getExtras();
-        String first_time_checker = extras.getString("new_user");
-        String tempCoinHolder = extras.getString(RecyclerlistObject.coinType);
-        String tempCurrHolder = extras.getString(RecyclerlistObject.currencyType);
-        String tempInputValue = extras.getString(RecyclerlistObject.inputValueHolder);
-        String tempConvertedValue = extras.getString(RecyclerlistObject.convertedValueHolder);
-        Log.d("Clicked",tempCoinHolder + " " + tempCurrHolder + " " + tempConvertedValue +" " + tempInputValue);
-
-        if (first_time_checker.equals("yes")){       //Default state for first time users
-            spinner_coin.setSelection(0);
-            spinner_currency.setSelection(0);
-            input_value.setText("1");
-            output.setText("0.0");
-
-        } else {
-            spinner_coin.setSelection(calculationHelper.getCoinSelectedFromText(tempCoinHolder));
-            spinner_currency.setSelection(calculationHelper.getCurrencySelectedFromText(tempCurrHolder));
-            input_value.setText(tempInputValue);
-            output.setText(tempConvertedValue);
-        }
-
-
-        //Convert button gets the user value and Starts an Async task to fetch the data from the API
+        //Conversion button gets the user value and Starts an Async task to fetch the data from the API
         convert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calculationHelper = new CalculationHelper();
-
                 value_to_convert = Double.parseDouble(input_value.getText().toString());  // Gets the user's value
                 selected_coin = calculationHelper.getCoinSelected(spinner_coin.getSelectedItemPosition());  // Gets the user's selected coin
                 selected_currency = calculationHelper.getCurrencySelected(spinner_currency.getSelectedItemPosition()); // Gets the user's selected currency
@@ -125,12 +93,11 @@ public class ConversionActivity extends AppCompatActivity {
                     tempInputValue = input_value.getText().toString();
                     tempConvertedValue = output.getText().toString();
 
-                    //Makes the insertion in Database
+                    //Makes the insertion into Database
                     dbHelper.insertPair(index,coin_Image_Id,tempCoin,currency_Image_Id,tempCurrency,tempInputValue,tempConvertedValue);
                     dbHelper.close();
                     Log.d("Insertion","Values Inserted");
                     Toast.makeText(ConversionActivity.this, "The Pair has been added to your list", Toast.LENGTH_SHORT).show();
-
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -140,6 +107,7 @@ public class ConversionActivity extends AppCompatActivity {
             }
         });
 
+        //Starts the Recycler List activity
         goto_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +117,45 @@ public class ConversionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void call_initializer() {
+
+        input_value = (EditText)findViewById(R.id.amount);
+        output = (TextView)findViewById(R.id.output);
+        convert = (Button)findViewById(R.id.convert);
+        add_to_list = (Button)findViewById(R.id.btn_add_to_list);
+        goto_list = (Button)findViewById(R.id.btn_goto_list);
+        spinner_coin = (Spinner)findViewById(R.id.spinner_coin);
+        spinner_currency = (Spinner)findViewById(R.id.spinner_currency);
+        dbHelper = new DbHelper(this);
+        RecyclerlistObject = new RecyclerList();
+        calculationHelper = new CalculationHelper();
+        currency_symbols = getResources().getStringArray(R.array.currency_symbols);
+        coin_drawable_id = getResources().getStringArray(R.array.coin_symbols);
+    }
+
+    private void get_extras_from_list() {
+
+        Bundle extras = getIntent().getExtras();
+        String first_time_checker = extras.getString("new_user");
+        String tempCoinHolder = extras.getString(RecyclerlistObject.coinType);
+        String tempCurrHolder = extras.getString(RecyclerlistObject.currencyType);
+        String tempInputValue = extras.getString(RecyclerlistObject.inputValueHolder);
+        String tempConvertedValue = extras.getString(RecyclerlistObject.convertedValueHolder);
+
+        if (first_time_checker.equals("yes")){       //Default state for first time users
+            spinner_coin.setSelection(0);
+            spinner_currency.setSelection(0);
+            input_value.setText("1");
+            output.setText("0.0");
+
+        } else {
+            spinner_coin.setSelection(calculationHelper.getCoinSelectedFromText(tempCoinHolder));
+            spinner_currency.setSelection(calculationHelper.getCurrencySelectedFromText(tempCurrHolder));
+            input_value.setText(tempInputValue);
+            output.setText(tempConvertedValue);
+        }
     }
 
     private void saveIndexInPref() {
@@ -166,24 +173,17 @@ public class ConversionActivity extends AppCompatActivity {
         return savedIndex;
     }
 
-
-    /**
-     * Method to build the url request from the user entered value
-     */
-    private String buildUrl(String selected_coin,String selected_currency){
-
-        String url = "https://min-api.cryptocompare.com/data/price?fsym=" + selected_coin + "&tsyms=" + selected_currency;
-        Log.e(TAG, "Url is:  " + url);
+     //Method builds the url request from the user entered values.
+     private String buildUrl(String selected_coin,String selected_currency){
+         String url = "https://min-api.cryptocompare.com/data/price?fsym=" + selected_coin + "&tsyms=" + selected_currency;
+         Log.e(TAG, "Url is:  " + url);
         return url;
     }
 
 
-    /**
-     * Async task class to get json by making HTTP call
-     */
+    //Async task class to get json by making HTTP call
     private class GetCurrentData extends AsyncTask<Void, Void, Void> {
          String price;
-
 
         @Override
         protected void onPreExecute() {
@@ -206,8 +206,7 @@ public class ConversionActivity extends AppCompatActivity {
                     String returnedValue;
                         JSONObject myObject = new JSONObject(jsonStr);
                         returnedValue = myObject.getString(selected_currency);
-                        price = calculationHelper.convert(value_to_convert,returnedValue);           //Converts the value to user defined figure
-
+                        price = calculationHelper.convert(value_to_convert,returnedValue);      //Converts the value.
 
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -245,10 +244,8 @@ public class ConversionActivity extends AppCompatActivity {
             super.onPostExecute(result);
             if (pDialog.isShowing())
                 pDialog.dismiss();
-            // Updating converted value to the output textview
+            //Sets Output TextView to converted value
             output.setText(price);
-            Log.e(TAG, "Returned Converted value: " + price);
-
         }
 
     }

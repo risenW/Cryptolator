@@ -14,12 +14,12 @@ import java.util.ArrayList;
  */
 
 public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHolder>{
-    private ArrayList<Coin> coinArrayList;
+    private ArrayList<CoinModel> coinModelArrayList;
     private MyItemClickListener clickListener;
     private MyItemLongClickListener longClickListener;
 
-    public CoinAdapter(ArrayList<Coin> coinArrayList) {
-        this.coinArrayList = coinArrayList;
+    public CoinAdapter(ArrayList<CoinModel> coinModelArrayList) {
+        this.coinModelArrayList = coinModelArrayList;
     }
 
     @Override
@@ -31,19 +31,19 @@ public class CoinAdapter extends RecyclerView.Adapter<CoinAdapter.RecyclerViewHo
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        Coin coin = coinArrayList.get(position);
-        holder.currency_icon.setText(coin.getCurrency_symbol());
-        holder.coin_icon.setText(coin.getCoin_symbol());
-        holder.coin.setText(coin.getCoin_type());
-        holder.currency.setText(coin.getCurrency());
-        holder.input_value.setText(String.valueOf(coin.getInput_value()));
-        holder.currency_value.setText(String.valueOf(coin.getOutput_value()));
+        CoinModel coinModel = coinModelArrayList.get(position);
+        holder.currency_icon.setText(coinModel.getCurrency_symbol());
+        holder.coin_icon.setText(coinModel.getCoin_symbol());
+        holder.coin.setText(coinModel.getCoin_type());
+        holder.currency.setText(coinModel.getCurrency());
+        holder.input_value.setText(String.valueOf(coinModel.getInput_value()));
+        holder.currency_value.setText(String.valueOf(coinModel.getOutput_value()));
 
     }
 
     @Override
     public int getItemCount() {
-        return coinArrayList.size();
+        return coinModelArrayList.size();
     }
 
 

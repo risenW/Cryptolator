@@ -36,6 +36,7 @@ public class DbHelper {
             + CURRENCY_TYPE + " TEXT,"
             + INPUT_VALUE + " TEXT,"
             + OUTPUT_VALUE + " TEXT);";
+
     private static final String DROP_QUERY = "drop table if exist " + TABLE_NAME + ";";
     private static final String DEBUDTAG = "Database Debug";
 
@@ -46,18 +47,15 @@ public class DbHelper {
     public void open() throws SQLException {
         coinDbHelper = new CoinDbHelper(context);
         sqLiteDatabase = coinDbHelper.getReadableDatabase();
-
-
     }
 
-    //close
     public void close() {
         if (coinDbHelper != null) {
             coinDbHelper.close();
         }
     }
 
-
+    //Inner Sqlite class
     private static class CoinDbHelper extends SQLiteOpenHelper {
 
         CoinDbHelper(Context context) {
@@ -70,8 +68,6 @@ public class DbHelper {
             Log.d(DEBUDTAG, CREATE_QUERY);
             sqLiteDatabase.execSQL(CREATE_QUERY);
             Log.d(DEBUDTAG, "Table created...");
-
-
         }
 
         @Override
@@ -79,11 +75,17 @@ public class DbHelper {
             sqLiteDatabase.execSQL(DROP_QUERY);
             Log.d(DEBUDTAG, "database dropped...");
             onCreate(sqLiteDatabase);
-
         }
     }
 
-        public void insertPair(int index, String coinImageId,String coinName, String currencyImageId,String currencyName,String inputValue, String currencyValue) {
+        public void insertPair(int index,
+                               String coinImageId,
+                               String coinName,
+                               String currencyImageId,
+                               String currencyName,
+                               String inputValue,
+                               String currencyValue) {
+
             sqLiteDatabase = coinDbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(INDEX,index);
